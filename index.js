@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import helmet from 'helmet';
 
 import spotsRouter from './routes/spots.js';
+import adminRouter from './routes/admin.js';
 
 dotenv.config();
 const app = express();
@@ -16,6 +17,7 @@ app.use(cors());
 app.use(helmet());
 app.use(express.json());
 app.use('/spots', spotsRouter);
+app.use('/admin', adminRouter);
 
 /* eslint-disable no-debugger, no-console */
 mongoose

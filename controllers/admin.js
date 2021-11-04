@@ -57,7 +57,7 @@ export const logAdmin = async (req, res) => {
     });
 
     res.cookie('token', token, { httpOnly: true }); //TODO make it expire in an hour aswell
-    res.status(200).json({ token });
+    res.status(200).json({ clientId: existingAdmin._id });
   } catch (err) {
     res.status(400).json({ message: "Une erreur s'est produite", err });
     console.log('err', err);
@@ -66,8 +66,15 @@ export const logAdmin = async (req, res) => {
 
 export const getAdmin = async (req, res) => {
   try {
-    res.send(200);
-  } catch (error) {}
+    const { id } = req.params;
+
+    const admin = await Admin.findById(id);
+
+    if (admin) return res.status(200).send({ admin });
+    return res.status(400).end();
+  } catch (error) {
+    res.status(400).json({ message: "Une erreur s'est produite", err });
+  }
 };
 
 export default router;

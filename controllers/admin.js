@@ -56,11 +56,18 @@ export const logAdmin = async (req, res) => {
       expiresIn: '1h',
     });
 
+    res.cookie('token', token, { httpOnly: true }); //TODO make it expire in an hour aswell
     res.status(200).json({ token });
   } catch (err) {
     res.status(400).json({ message: "Une erreur s'est produite", err });
     console.log('err', err);
   }
+};
+
+export const getAdmin = async (req, res) => {
+  try {
+    res.send(200);
+  } catch (error) {}
 };
 
 export default router;

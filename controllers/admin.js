@@ -5,10 +5,10 @@ import dotenv from 'dotenv';
 
 import Admin from '../models/admin.js';
 
-const router = express.Router();
 dotenv.config();
-
+const router = express.Router();
 const secret = process.env.SECRET;
+
 
 export const addAdmin = async (req, res) => {
   try {
@@ -53,10 +53,10 @@ export const logAdmin = async (req, res) => {
     if (!isPasswordCorrect) displayWrongCreds();
 
     const token = jwt.sign({ username, id: existingAdmin._id }, secret, {
-      expiresIn: '1h',
+      expiresIn: '3d',
     });
 
-    res.cookie('token', token, { httpOnly: true }); //TODO make it expire in an hour aswell
+    res.cookie('token', token, { httpOnly: true, maxAge: 60000 * 60 * 24 * 3 });
     res.status(200).json({ clientId: existingAdmin._id });
   } catch (err) {
     res.status(400).json({ message: "Une erreur s'est produite", err });
@@ -71,7 +71,7 @@ export const getAdmin = async (req, res) => {
     const admin = await Admin.findById(id);
 
     if (admin) return res.status(200).send({ admin });
-    return res.status(400).end();
+    return res.status(404).end();
   } catch (error) {
     res.status(400).json({ message: "Une erreur s'est produite", err });
   }

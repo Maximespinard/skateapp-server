@@ -9,7 +9,6 @@ dotenv.config();
 const router = express.Router();
 const secret = process.env.SECRET;
 
-
 export const addAdmin = async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -70,7 +69,8 @@ export const getAdmin = async (req, res) => {
 
     const admin = await Admin.findById(id);
 
-    if (admin) return res.status(200).send({ admin });
+    if (admin)
+      return res.status(200).send({ admin: { username: admin.username } });
     return res.status(404).end();
   } catch (error) {
     res.status(400).json({ message: "Une erreur s'est produite", err });
